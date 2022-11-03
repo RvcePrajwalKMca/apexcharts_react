@@ -1,0 +1,11 @@
+./Desktop/js> npx create-react-app multisens_react
+
+> npm create vite@latest
+> give name
+> cd name
+> npm install
+> npm run dev
+
+
+react apexchart : https://apexcharts.com/docs/react-charts/
+plotly : https://redstapler.co/javascript-realtime-chart-plotly/
