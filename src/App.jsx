@@ -292,7 +292,7 @@ function App(){
         type: 'area'
       },
       dataLabels: {
-        enabled: false
+        enabled: true
       },
       stroke: {
         curve: 'smooth'
@@ -319,6 +319,10 @@ function App(){
       },
     },
   })
+
+
+
+
 
   return(
     <div className="App">
@@ -355,6 +359,10 @@ function App(){
       <h3>Voltage BR</h3>
       <br/>
       <ReactApexChart options={Volt_BR.options} series={Volt_BR.series} type="area" height={350} width={600} />
+      <br />
+      <br />
+      
+
     </div>
   );
 }
