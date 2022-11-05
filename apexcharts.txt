@@ -1,3 +1,5 @@
 https://apexcharts.com/docs/react-charts/
 npm install --save react-apexcharts apexcharts
 https://youtu.be/q0h0ZJb204c
+realtime charts : https://codesandbox.io/s/jo3jq?file=/src/RealtimeLineChart.js
+horizontal vertical chart : https://www.youtube.com/watch?v=JxEyXOlSgV0
