@@ -9,11 +9,8 @@ try:
 	from flask_restful import reqparse
 	from flask import request
 	from flask_cors import CORS
-	import time
-	import datetime
-	import json
-	import adafruit_dht
-	import board
+#	import adafruit_dht
+	import random
 	print("All modules loaded ")
 except Exception as e:
 	print("Error: {}".format(e))
@@ -31,18 +28,18 @@ CORS(app)
 
 api = Api(app)
 #pin = 7
-sensor = adafruit_dht.DHT11(board.D4)
+#sensor = adafruit_dht.DHT11(board.D4)
 class Sensors(object):
 	def __init__(self):
 		pass
 	def get(self):
-		temperature = sensor.temperature
-		humidity = sensor.humidity
-		if humidity is not None and temperature is not None:
-			return{
-				'Temperature':temperature,
-				"humidity":humidity
-			}
+		#temperature = sensor.temperature
+		#humidity = sensor.humidity
+		#if humidity is not None and temperature is not None:
+		return{
+			'Temperature': random.randint(25, 30),
+			'humidity': random.randint(85, 90)
+		}
 class Controller(Resource):
 	def __init__(self):
 		pass

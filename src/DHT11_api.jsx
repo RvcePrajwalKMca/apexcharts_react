@@ -5,28 +5,7 @@ import "./Livechart.css";
 import ReactApexChart from "react-apexcharts";
 
 function DHT11_api() {
-  // const [DHT11, setDHT11] = useState([]);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetch(`http://192.168.29.40:5000/api/v1/hello`)
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw Error("some error");
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((actualData) => {
-  //         setDHT11(actualData);
-  //         console.log(actualData);
-  //       })
-  //       .catch((err) => {
-  //         // console.log(err.message);
-  //       });
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [DHT11]);
-  const { data, count } = useFetch(`http://192.168.29.40:5000/api/v1/hello`);
+  const { data, count } = useFetch(`http://192.168.29.127:5000/api/v1/hello`);
 
   function get_y1_axis(y_val) {
     if (y1_axis.length < 6) {
@@ -69,32 +48,10 @@ function DHT11_api() {
       chart: {
         height: 350,
         type: "area",
-        // animations: {
-        //   enabled: true,
-        //   easing: "easeinout",
-        //   speed: 800,
-        //   animateGradually: {
-        //     enabled: true,
-        //     delay: 150,
-        //   },
-        //   dynamicAnimation: {
-        //     enabled: true,
-        //     speed: 350,
-        //   },
-        // },
+        animations: {
+          enabled: false,
+        },
       },
-      // noData: {
-      //   text: "Loading...",
-      //   align: "center",
-      //   verticalAlign: "middle",
-      //   offsetX: 0,
-      //   offsetY: 0,
-      //   style: {
-      //     color: "#000000",
-      //     fontSize: "14px",
-      //     fontFamily: "Helvetica",
-      //   },
-      // },
       markers: {
         size: 5,
         hover: {
@@ -114,7 +71,7 @@ function DHT11_api() {
       },
       tooltip: {
         x: {
-          format: "HH:mm:ss",
+          format: "dd MMM yyyy HH:mm:ss",
         },
       },
     },
@@ -138,12 +95,6 @@ function DHT11_api() {
           type: "area",
           animations: {
             enabled: false,
-            // easing: "easeinout",
-            // speed: 800,
-            // dynamicAnimation: {
-            //   enabled: false,
-            //   speed: 350,
-            // },
           },
         },
         markers: {
@@ -175,8 +126,6 @@ function DHT11_api() {
   useEffect(() => {
     const interval = setInterval(() => {
       get_x_axis(new Date().toISOString());
-      // get_y1_axis(Math.floor(Math.random() * 101).toFixed(2));
-      // get_y2_axis(Math.floor(Math.random() * 101).toFixed(2));
       get_y1_axis(data.Temperature);
       get_y2_axis(data.humidity);
       setVolt_R((x) => getData1());
@@ -195,7 +144,6 @@ function DHT11_api() {
           height={350}
           width={400}
         />
-        {/* <h2>{count.value}</h2> */}
       </div>
       <br></br>
       <center>
