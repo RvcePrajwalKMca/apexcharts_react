@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import useFetch from "./usefetch";
+import useZoneFetch from "./useZoneFetch";
 import "./Livechart.css";
 import ReactApexChart from "react-apexcharts";
 
-function DHT11_api() {
-  const { data, count } = useFetch(`http://192.168.43.248:5000/api/v1/hello`);
+function ZoneWiseLiveChart() {
+  const { data, count } = useZoneFetch(
+    `http://192.46.211.177:4001/get-live-by-zone`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ZoneId: "zone_1" }),
+    }
+  );
 
   function get_y1_axis(y_val) {
     if (y1_axis.length < 6) {
@@ -21,6 +30,42 @@ function DHT11_api() {
       sety2_axis([...y2_axis.slice(1), y_val]);
     }
   }
+  function get_y3_axis(y_val) {
+    if (y3_axis.length < 6) {
+      sety3_axis([...y3_axis, y_val]);
+    } else {
+      sety3_axis([...y3_axis.slice(1), y_val]);
+    }
+  }
+  function get_y4_axis(y_val) {
+    if (y4_axis.length < 6) {
+      sety4_axis([...y4_axis, y_val]);
+    } else {
+      sety4_axis([...y4_axis.slice(1), y_val]);
+    }
+  }
+  function get_y5_axis(y_val) {
+    if (y5_axis.length < 6) {
+      sety5_axis([...y5_axis, y_val]);
+    } else {
+      sety5_axis([...y5_axis.slice(1), y_val]);
+    }
+  }
+
+  function GMT_TO_IST() {
+    var currentTime = new Date();
+
+    var currentOffset = currentTime.getTimezoneOffset();
+
+    var ISTOffset = 330; // IST offset UTC +5:30
+
+    var ISTTime = new Date(currentTime.getTime() + ISTOffset * 60000);
+
+    // Formatting the IST time as a string
+    const formattedISTTime = ISTTime.toISOString();
+    // console.log(formattedISTTime);
+    return formattedISTTime;
+  }
 
   function get_x_axis(x_val) {
     if (x_axis.length < 6) {
@@ -33,6 +78,9 @@ function DHT11_api() {
   const [x_axis, setx_axis] = useState([]);
   const [y1_axis, sety1_axis] = useState([]);
   const [y2_axis, sety2_axis] = useState([]);
+  const [y3_axis, sety3_axis] = useState([]);
+  const [y4_axis, sety4_axis] = useState([]);
+  const [y5_axis, sety5_axis] = useState([]);
   const [Volt_R, setVolt_R] = useState({
     series: [
       {
@@ -40,8 +88,20 @@ function DHT11_api() {
         data: y1_axis,
       },
       {
-        name: "humidity",
+        name: "Humidity",
         data: y2_axis,
+      },
+      {
+        name: "RainLevel",
+        data: y3_axis,
+      },
+      {
+        name: "FlammableConcentration",
+        data: y4_axis,
+      },
+      {
+        name: "AirQuality",
+        data: y5_axis,
       },
     ],
     options: {
@@ -85,8 +145,20 @@ function DHT11_api() {
           data: y1_axis,
         },
         {
-          name: "humidity",
+          name: "Humidity",
           data: y2_axis,
+        },
+        {
+          name: "RainLevel",
+          data: y3_axis,
+        },
+        {
+          name: "FlammableConcentration",
+          data: y4_axis,
+        },
+        {
+          name: "AirQuality",
+          data: y5_axis,
         },
       ],
       options: {
@@ -125,9 +197,12 @@ function DHT11_api() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      get_x_axis(new Date().toISOString());
+      get_x_axis(GMT_TO_IST());
       get_y1_axis(data.Temperature);
-      get_y2_axis(data.humidity);
+      get_y2_axis(data.Humidity);
+      get_y3_axis(data.RainLevel);
+      get_y4_axis(data.FlammableConcentration);
+      get_y5_axis(data.AirQuality);
       setVolt_R((x) => getData1());
     }, 1000);
     return () => clearInterval(interval);
@@ -136,7 +211,7 @@ function DHT11_api() {
   return (
     <div className="App">
       <div className="livechart">
-        <h3>HOME DHT11</h3>
+        <h3>HOME ZoneWiseLiveChart</h3>
         <ReactApexChart
           options={Volt_R.options}
           series={Volt_R.series}
@@ -149,12 +224,18 @@ function DHT11_api() {
       <center>
         <table border="1">
           <tr>
-            <th>temperature</th>
-            <th>humidity</th>
+            <th>Temperature</th>
+            <th>Humidity</th>
+            <th>RainLevel</th>
+            <th>FlammableConcentration</th>
+            <th>AirQuality</th>
           </tr>
           <tr>
             {data && <td>{data.Temperature}</td>}
-            {data && <td>{data.humidity}</td>}
+            {data && <td>{data.Humidity}</td>}
+            {data && <td>{data.RainLevel}</td>}
+            {data && <td>{data.FlammableConcentration}</td>}
+            {data && <td>{data.AirQuality}</td>}
           </tr>
         </table>
         <br></br>
@@ -164,4 +245,4 @@ function DHT11_api() {
   );
 }
 
-export default DHT11_api;
+export default ZoneWiseLiveChart;
